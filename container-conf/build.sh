@@ -10,5 +10,11 @@ build_docker_cmd='["'"$beamsim_jupyter_tini_file"'", "--", "'"$beamsim_jupyter_r
 
 build_as_root() {
     rpm -i https://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-repo-fedora29-10.1.243-1.x86_64.rpm
-    dnf install -y kmodtool kernel-devel cuda-drivers
+    dnf install -y kmodtool kernel-devel cuda-drivers cuda
+}
+
+build_as_run_user() {
+    umask 022
+    pyenv global py3
+    pip install tensorflow-GPU
 }
