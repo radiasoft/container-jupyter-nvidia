@@ -18,7 +18,7 @@ build_as_root() {
     umask 022
 #    export CUDA_VERSION=10.1.243
 #    export CUDA_PKG_VERSION=10-1-$CUDA_VERSION-1
-    export PATH "/usr/local/cuda/bin:$PATH"
+#    export PATH "/usr/local/cuda/bin:$PATH"
 
     # https://gitlab.com/nvidia/container-images/cuda/blob/master/dist/centos7/10.1/base/Dockerfile
     build_yum install cuda-cudart-10-1 cuda-compat-10-1
