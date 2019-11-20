@@ -28,7 +28,7 @@ build_as_root() {
     ln -s libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
     ldconfig
 
-    build_yum install cuda-toolkit
+    build_yum install cuda-toolkit-10-1 libcudnn7-10-1
     #cuda-command-line-tools-10-1 cuda-cublas-10-1 cuda-cufft-10-1 cuda-curand-10-1 cuda-cusolver-10-1 cuda-cusparse-10-1 libcudnn7-10-1 libzmq3-dev
 
 #??    apt-get install -y --no-install-recommends libnvinfer5=5.1.5-1+cuda${CUDA} \
