@@ -13,7 +13,7 @@ beamsim_jupyter_radia_run_boot=$beamsim_jupyter_boot_dir/start
 build_docker_cmd='["'"$beamsim_jupyter_tini_file"'", "--", "'"$beamsim_jupyter_radia_run_boot"'"]'
 
 build_as_root() {
-    # Must be the same as on the host kernel
+    # CUDA 10.1.243 be the same as on the host kernel
     build_yum install https://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-repo-fedora29-10.1.243-1.x86_64.rpm
     umask 022
 #    export CUDA_VERSION=10.1.243
@@ -23,11 +23,10 @@ build_as_root() {
     # https://gitlab.com/nvidia/container-images/cuda/blob/master/dist/centos7/10.1/base/Dockerfile
     build_yum install cuda-cudart-10-1 cuda-compat-10-1
     ln -s cuda-10.1 /usr/local/cuda
-    ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
     echo /usr/local/cuda/lib64/stubs > /etc/ld.so.conf.d/z-cuda-stubs.conf
     ln -s libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
     ldconfig
-
+    build_yum -install https://developer.download.nvidia.com/compute/machine-learning/repos/rhel7/x86_64/nvidia-machine-learning-repo-rhel7-1.0.0-1.x86_64.rpm
     build_yum install cuda-toolkit-10-1 libcudnn7-10-1
     #cuda-command-line-tools-10-1 cuda-cublas-10-1 cuda-cufft-10-1 cuda-curand-10-1 cuda-cusolver-10-1 cuda-cusparse-10-1 libcudnn7-10-1 libzmq3-dev
 
