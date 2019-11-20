@@ -15,7 +15,7 @@ build_docker_cmd='["'"$beamsim_jupyter_tini_file"'", "--", "'"$beamsim_jupyter_r
 build_as_root() {
     # CUDA 10.1.243 be the same as on the host kernel
     build_yum install https://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-repo-fedora29-10.1.243-1.x86_64.rpm
-    build_yum -install https://developer.download.nvidia.com/compute/machine-learning/repos/rhel7/x86_64/nvidia-machine-learning-repo-rhel7-1.0.0-1.x86_64.rpm
+    build_yum install https://developer.download.nvidia.com/compute/machine-learning/repos/rhel7/x86_64/nvidia-machine-learning-repo-rhel7-1.0.0-1.x86_64.rpm
     umask 022
 #    export CUDA_VERSION=10.1.243
 #    export CUDA_PKG_VERSION=10-1-$CUDA_VERSION-1
