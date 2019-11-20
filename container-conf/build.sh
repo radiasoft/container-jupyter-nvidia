@@ -24,7 +24,7 @@ build_as_root() {
     # the nvidia-container-runtime puts a libcuda.so in /lib64, and we want to use that
     rm -f /usr/local/cuda/lib64/stubs/libcuda.so
     # CPUTI might as well be here, not in LD_LIBRARY_PATH
-    cat > rs-cuda.conf <<'EOF'
+    cat > /etc/ld.so.conf.d/rs-cuda.conf <<'EOF'
 /usr/local/cuda/lib64/stubs
 /usr/local/cuda/lib64
 /usr/local/cuda/extras/CUPTI/lib64
