@@ -22,12 +22,11 @@ build_as_root() {
 #    export PATH "/usr/local/cuda/bin:$PATH"
 
     # https://gitlab.com/nvidia/container-images/cuda/blob/master/dist/centos7/10.1/base/Dockerfile
-    build_yum install cuda-cudart-10-1 cuda-compat-10-1 cuda-toolkit-10-1 libcudnn7-10-1
-
+    build_yum install cuda-cudart-10-1 cuda-compat-10-1 cuda-toolkit-10-1 libcudnn7
 #    ln -s cuda-10.1 /usr/local/cuda
 
 #    echo /usr/local/cuda/lib64/stubs > /etc/ld.so.conf.d/z-cuda-stubs.conf
-#    ln -s libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
+>#    ln -s libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
 #    ldconfig
 
     #cuda-command-line-tools-10-1 cuda-cublas-10-1 cuda-cufft-10-1 cuda-curand-10-1 cuda-cusolver-10-1 cuda-cusparse-10-1 libcudnn7-10-1 libzmq3-dev
