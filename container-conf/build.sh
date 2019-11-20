@@ -13,7 +13,6 @@ beamsim_jupyter_radia_run_boot=$beamsim_jupyter_boot_dir/start
 build_docker_cmd='["'"$beamsim_jupyter_tini_file"'", "--", "'"$beamsim_jupyter_radia_run_boot"'"]'
 
 build_as_root() {
-    # CUDA 10.1.243 be the same as on the host kernel
     umask 022
     cd "$build_guest_conf"
     build_curl -o cuda.run https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda_10.0.130_410.48_linux
