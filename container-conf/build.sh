@@ -23,7 +23,7 @@ build_as_root() {
     # tensorflow/stream_executor/cuda/cuda_diagnostics.cc:200] libcuda reported version is: Not found: was unable to find libcuda.so DSO loaded into this program
     # the nvidia-container-runtime puts a libcuda.so in /lib64, and we want to use that
     # DO NOT include stubs in the load path; they are empty
-    rm -f /usr/local/cuda/lib64/stubs
+    rm -rf /usr/local/cuda/lib64/stubs
     # CUPTI might as well be here, too
     cat > /etc/ld.so.conf.d/rs-cuda.conf <<'EOF'
 /usr/local/cuda/lib64
