@@ -7,10 +7,8 @@ build_dockerfile_aux="USER $build_run_user"'
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 ENV NVIDIA_REQUIRE_CUDA "cuda>=10.0 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=410,driver<411"'
-beamsim_jupyter_boot_dir=$build_run_user_home/.radia-run
-beamsim_jupyter_tini_file=$beamsim_jupyter_boot_dir/tini
-beamsim_jupyter_radia_run_boot=$beamsim_jupyter_boot_dir/start
-build_docker_cmd='["'"$beamsim_jupyter_tini_file"'", "--", "'"$beamsim_jupyter_radia_run_boot"'"]'
+# use previous command
+build_docker_cmd=
 
 build_as_root() {
     umask 022
@@ -29,7 +27,6 @@ EOF
 
 build_as_run_user() {
     umask 022
-    pyenv global py3
     pip uninstall -y tensorflow keras
     pip install tensorflow keras
 }
