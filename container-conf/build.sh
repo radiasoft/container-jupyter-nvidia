@@ -10,7 +10,7 @@ build_is_public=1
 build_dockerfile_aux="USER $build_run_user"'
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-ENV NVIDIA_REQUIRE_CUDA "cuda>=10.0 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=410,driver<411"'
+ENV NVIDIA_REQUIRE_CUDA "cuda>=10.0 brand=tesla,driver>=410"'
 # use previous command
 build_docker_cmd=
 
