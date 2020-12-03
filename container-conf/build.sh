@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# For CentOS7 install see:
+# https://github.com/radiasoft/devops/wiki/AWS#gpu-driver-install
+
 build_image_base=radiasoft/beamsim-jupyter
 build_is_public=1
 # POSIT container-beamsim-jupyter
