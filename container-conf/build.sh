@@ -20,6 +20,7 @@ build_as_root() {
     dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-fedora29.repo
     build_yum install cuda-toolkit-10-1
     cat > /etc/ld.so.conf.d/rs-cuda.conf <<'EOF'
+/usr/local/cuda-10.2/targets/x86_64-linux/lib
 /usr/local/cuda/extras/CUPTI/lib64
 EOF
     # https://gitlab.com/nvidia/container-images/cuda/blob/master/dist/centos7/10.1/runtime/cudnn7/Dockerfile
