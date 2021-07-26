@@ -10,23 +10,21 @@ build_is_public=1
 build_dockerfile_aux="USER $build_run_user"'
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-ENV NVIDIA_REQUIRE_CUDA "cuda>=10.0 brand=tesla,driver>=410"'
+ENV NVIDIA_REQUIRE_CUDA "cuda>=11.1 brand=tesla,driver>=410"'
 # use previous command
 build_docker_cmd=
 
 build_as_root() {
     umask 022
     cd "$build_guest_conf"
-    dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-fedora29.repo
-    build_yum install cuda-toolkit-10-1
+    dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora32/x86_64/cuda-fedora32.repo
+    build_yum install cuda-toolkit-11-1
     cat > /etc/ld.so.conf.d/rs-cuda.conf <<'EOF'
-/usr/local/cuda-10.2/targets/x86_64-linux/lib
-/usr/local/cuda/extras/CUPTI/lib64
+/usr/local/cuda-11.1/targets/x86_64-linux/lib
 EOF
-    # https://gitlab.com/nvidia/container-images/cuda/blob/master/dist/centos7/10.1/runtime/cudnn7/Dockerfile
-    # modified to use 10.0
-    build_curl -O http://developer.download.nvidia.com/compute/redist/cudnn/v7.6.5/cudnn-10.1-linux-x64-v7.6.5.32.tgz
-    tar --no-same-owner -xzf cudnn-10.1-linux-x64-v7.6.5.32.tgz -C /usr/local --wildcards 'cuda/lib64/libcudnn.so.*'
+    # https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/11.1.1/centos7-x86_64/runtime/cudnn8/Dockerfile
+    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
+    build_yum install libcudnn8-8.0.5.39-1.cuda11.1.x86_64
     ldconfig
 }
 
