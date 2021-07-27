@@ -19,9 +19,6 @@ build_as_root() {
     cd "$build_guest_conf"
     dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora32/x86_64/cuda-fedora32.repo
     build_yum install cuda-toolkit-11-1
-    cat > /etc/ld.so.conf.d/rs-cuda.conf <<'EOF'
-/usr/local/cuda-11.1/targets/x86_64-linux/lib
-EOF
     # https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/11.1.1/centos7-x86_64/runtime/cudnn8/Dockerfile
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
     build_yum install libcudnn8-8.0.5.39-1.cuda11.1.x86_64
