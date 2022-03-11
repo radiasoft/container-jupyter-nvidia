@@ -29,5 +29,8 @@ build_as_run_user() {
     umask 022
     pip uninstall -y tensorflow keras
     pip install tensorflow keras
-    rpm_code_debug=1 rpm_code_install_dir=/nonexistent radia_run rpm-code elegant gpu-only
+    local c
+    for c in 'elegant' 'hypre'; do
+        rpm_code_debug=1 rpm_code_install_dir=/nonexistent radia_run rpm-code "$c" gpu-only
+    done
 }
