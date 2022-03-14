@@ -23,6 +23,8 @@ build_as_root() {
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
     build_yum install libcudnn8-8.0.5.39-1.cuda11.1.x86_64
     ldconfig
+    # do after other yum operations so they have a consistent db
+    rpm -e --nodeps rscode-hypre
 }
 
 build_as_run_user() {
