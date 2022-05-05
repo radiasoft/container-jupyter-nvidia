@@ -17,11 +17,12 @@ build_docker_cmd=
 build_as_root() {
     umask 022
     cd "$build_guest_conf"
-    dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora32/x86_64/cuda-fedora32.repo
-    build_yum install cuda-toolkit-11-1
-    # https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/11.1.1/centos7-x86_64/runtime/cudnn8/Dockerfile
+    # fedora33 but seems to work on fedora32
+    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora33/x86_64/cuda-fedora33.repo
+    build_yum install cuda-toolkit-11-2
+    # https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/11.2.2/centos7/devel/cudnn8/Dockerfile
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
-    build_yum install libcudnn8-8.0.5.39-1.cuda11.1.x86_64
+    build_yum install libcudnn8-devel-8.1.1.33-1.cuda11.2.x86_64
     ldconfig
     # do after other yum operations so they have a consistent db
     rpm -e --nodeps rscode-hypre
@@ -30,7 +31,8 @@ build_as_root() {
 build_as_run_user() {
     umask 022
     pip uninstall -y tensorflow keras
-    pip install tensorflow keras
+    # tensorflow version depends on cuda versions https://www.tensorflow.org/install/source#gpu
+    pip install tensorflow==2.8.0 keras
     local c
     for c in 'elegant' 'hypre'; do
         rpm_code_debug=1 rpm_code_install_dir=/nonexistent radia_run rpm-code "$c" gpu-only
