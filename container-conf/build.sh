@@ -7,7 +7,6 @@ build_image_base=radiasoft/beamsim-jupyter
 build_is_public=1
 # POSIT container-beamsim-jupyter
 # nvidia-container-runtime needs the environment vars "OCI"
-build_dockerfile_aux="USER $build_run_user"'
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 ENV NVIDIA_REQUIRE_CUDA "cuda>=11.1 brand=tesla,driver>=410"'
