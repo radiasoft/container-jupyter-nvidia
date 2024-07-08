@@ -22,7 +22,7 @@ build_as_root() {
     build_yum install libcudnn8-8.9.7.29-1.cuda12.2 libcudnn8-devel-8.9.7.29-1.cuda12.2
     ldconfig
     # do after other yum operations so they have a consistent db
-    rpm -e --nodeps rscode-hypre rscode-ml
+    rpm -e --nodeps rscode-hypre rscode-ml rscode-mlopal
 }
 
 build_as_run_user() {
