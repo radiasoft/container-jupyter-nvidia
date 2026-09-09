@@ -1,32 +1,43 @@
 #!/bin/bash
-
-# For CentOS7 install see:
-# https://github.com/radiasoft/devops/wiki/AWS#gpu-driver-install
-
-build_image_base=radiasoft/beamsim-jupyter
+#
+# Minimal GPU jupyter image: jupyterlab and torch. Compatible invocation
+# with beamsim-jupyter.
+#
+build_image_base=radiasoft/fedora
 build_is_public=1
-# POSIT container-beamsim-jupyter
-# nvidia-container-runtime needs the environment vars "OCI"
-build_dockerfile_aux='ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-ENV NVIDIA_REQUIRE_CUDA "cuda>=12.2 brand=tesla,driver>=525.60.13"'
-# use previous command
-build_docker_cmd=
+# nvidia-container-runtime reads this from the image; without it the default
+# is utility, which gets nvidia-smi but not CUDA.
+build_dockerfile_aux='ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility'
+build_docker_cmd=$build_run_user_home/.radia-run/start
+
+declare -a _jupyter_nvidia_codes=(
+    common
+)
+declare -a _jupyter_nvidia_rpms=(
+    gnuplot-minimal
+    # Needed to export notebooks https://github.com/radiasoft/devops/issues/188
+    pandoc
+    vim-enhanced
+)
+jupyterlab_basic_rpmfusion=1
+
+# 2.11 drops sm_70 from the cu128 wheels, so this cannot move past 2.10.
+_jupyter_nvidia_torch_version=2.10.0
+
+_jupyter_nvidia_torch() {
+    install_pip_install --index-url https://download.pytorch.org/whl/cu128 \
+        "torch==$_jupyter_nvidia_torch_version"
+}
 
 build_as_root() {
-    umask 022
-    cd "$build_guest_conf"
-    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora37/x86_64/cuda-fedora37.repo
-    build_yum install cuda-12-2
-    # https://gitlab.com/nvidia/container-images/cuda/-/blob/e3ff10eab3a1424fe394899df0e0f8ca5a410f0f/dist/12.2.2/centos7/base/cuda.repo-x86_64
-    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
-    build_yum install libcudnn8-8.9.7.29-1.cuda12.2 libcudnn8-devel-8.9.7.29-1.cuda12.2
-    ldconfig
-    # do after other yum operations so they have a consistent db
-    rpm -e --nodeps rscode-hypre rscode-ml rscode-mlopal
+    install_yum_install "${_jupyter_nvidia_rpms[@]}"
+    install_repo_eval jupyterlab-basic as_root
 }
 
 build_as_run_user() {
-    umask 022
-    rpm_code_debug=1 rpm_code_install_dir=/nonexistent radia_run rpm-code hypre gpu-only
-    install_repo_eval ml-python gpu
+    install_repo_eval beamsim-codes "${_jupyter_nvidia_codes[@]}"
+    # rscode-common installs pyenv, which is not on PATH until bashrc is reread
+    install_source_bashrc
+    install_repo_eval jupyterlab-basic as_run_user
+    _jupyter_nvidia_torch
 }
