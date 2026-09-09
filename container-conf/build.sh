@@ -19,6 +19,7 @@ declare -a _jupyter_nvidia_rpms=(
     pandoc
     vim-enhanced
 )
+jupyterlab_basic_rpmfusion=1
 
 # 2.11 drops sm_70 from the cu128 wheels, so this cannot move past 2.10.
 _jupyter_nvidia_torch_version=2.10.0
