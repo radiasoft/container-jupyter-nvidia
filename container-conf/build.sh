@@ -12,6 +12,18 @@ build_docker_cmd=$build_run_user_home/.radia-run/start
 
 declare -a _jupyter_nvidia_codes=(
     common
+    warpx-nvidia
+)
+# CUDA 13 dropped sm_70 (Volta) codegen, and fedora41 is the newest NVIDIA repo
+# shipping CUDA 12.
+_jupyter_nvidia_cuda_repo=https://developer.download.nvidia.com/compute/cuda/repos/fedora41/x86_64/cuda-fedora41.repo
+
+# What the warpx and amrex libraries link against. torch's wheels vendor their
+# own copies, which are not on the loader's path and track torch's cuda.
+declare -a _jupyter_nvidia_cuda_rpms=(
+    libcurand-12-9
+    libcusparse-12-9
+    libnvjitlink-12-9
 )
 declare -a _jupyter_nvidia_rpms=(
     gnuplot-minimal
@@ -31,6 +43,8 @@ _jupyter_nvidia_torch() {
 
 build_as_root() {
     install_yum_install "${_jupyter_nvidia_rpms[@]}"
+    install_yum_add_repo "$_jupyter_nvidia_cuda_repo"
+    install_yum_install "${_jupyter_nvidia_cuda_rpms[@]}"
     install_repo_eval jupyterlab-basic as_root
 }
 
